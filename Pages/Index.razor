@@ -1,0 +1,44 @@
+@page "/"
+@using System.Timers
+
+<div class="container">
+    <div class="title">
+        <h1>Edison</h1>
+    </div>
+
+    <div class="currencySidebar">
+        <h2>Money: @DisplayHelpers.DisplayPrice(Engine.State.Cash)</h2>
+    </div>
+
+    <div class="buildingList">
+        @foreach (var generator in Engine.State.Generators)
+        {
+            <PowerGeneratorComponent Generator=@generator />
+        }
+    </div>
+
+    <div class="gridList">
+        <!---->
+    </div>
+</div>
+
+@code {
+    [Inject] protected GameEngine Engine { get; set; }
+    protected Timer gameTimer;
+
+    protected override void OnInitialized()
+    {
+        gameTimer = new Timer
+        {
+            Interval = 50
+        };
+        gameTimer.Elapsed += LoopStep;
+        gameTimer.Start();
+    }
+
+    private void LoopStep(object sender, ElapsedEventArgs e)
+    {
+        Engine.ProcessTime(e.SignalTime);
+        this.StateHasChanged();
+    }
+}

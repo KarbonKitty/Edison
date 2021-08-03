@@ -1,0 +1,18 @@
+<div class="generator">
+    <h2>@Generator.Name (@Generator.NumberBuilt)</h2>
+    <p>Production: @Generator.CurrentProduction $ / s</p>
+    <p>Price: @DisplayHelpers.DisplayPrice(Generator.CurrentPrice)</p>
+    <div class="btn" @onclick="BuyGenerator">Buy</div>
+</div>
+
+@code {
+    [Inject] protected GameEngine engine { get; set; }
+
+    [Parameter]
+    public PowerGenerator Generator { get; set; }
+
+    private void BuyGenerator()
+    {
+        engine.TryBuy(Generator);
+    }
+}
