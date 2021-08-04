@@ -32,10 +32,10 @@ namespace Edison
 
         public bool TryBuy(IBuyable buyable)
         {
-            if (buyable.CanAfford(State))
+            if (State.Cash >= buyable.CurrentPrice)
             {
                 State.Cash -= buyable.CurrentPrice;
-                buyable.Buy();
+                buyable.Get();
                 return true;
             }
             return false;

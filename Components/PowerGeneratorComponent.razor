@@ -1,7 +1,8 @@
 <div class="generator">
-    <h2>@Generator.Name (@Generator.NumberBuilt)</h2>
+    <h2 style="float: left">@Generator.Name (@Generator.NumberBuilt)</h2>
+    <h2 style="float: right">Price: @DisplayHelpers.DisplayPrice(Generator.CurrentPrice)</h2>
+    <div style="clear: both"></div>
     <p>Production: @Generator.CurrentProduction $ / s</p>
-    <p>Price: @DisplayHelpers.DisplayPrice(Generator.CurrentPrice)</p>
     <div class="btn" @onclick="BuyGenerator">Buy</div>
 </div>
 

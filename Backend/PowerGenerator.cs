@@ -19,10 +19,10 @@ namespace Edison
 
         public double CurrentProduction => BaseProduction * NumberBuilt;
 
-            // TODO: shouldn't we have the multiplier defined separately?
+        // TODO: shouldn't we have the multiplier defined separately?
         public double CurrentPrice => BasePrice * Math.Pow(1.15, NumberBuilt);
 
-        public void Buy() => NumberBuilt++;
+        public void Get() => NumberBuilt++;
 
         public bool CanAfford(GameState state) => state.Cash >= CurrentPrice;
     }
