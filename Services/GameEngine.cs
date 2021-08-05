@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Edison
 {
@@ -17,9 +18,10 @@ namespace Edison
                 Generators = new List<PowerGenerator>()
             };
 
-            // TODO: temp
-            State.Generators.Add(new PowerGenerator(10.0, "Solar", 1.0));
-            State.Generators.Add(new PowerGenerator(100, "Hydro", 2.0));
+            foreach (var (name, price, production) in PowerGeneratorsData.Data)
+            {
+                State.Generators.Add(new PowerGenerator(price, name, production));
+            }
         }
 
         public void ProcessTime(DateTime newTime)
@@ -43,12 +45,8 @@ namespace Edison
 
         private void RunGenerators(double deltaT)
         {
-            // TODO: write this better
-            foreach (var generator in State.Generators)
-            {
-                var moneyProduced = generator.CurrentProduction * deltaT;
-                State.Cash += moneyProduced;
-            }
+            var moneyProduced = State.Generators.Sum(g => g.CurrentProduction * deltaT);
+            State.Cash += moneyProduced;
         }
     }
 }

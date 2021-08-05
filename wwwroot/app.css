@@ -83,8 +83,8 @@ a:active {
   grid-template-rows: 4rem 1fr 1fr;
   grid-template-areas: 
       "header header header header"
-      "sidebar generator grid tech"
-      "sidebar generator grid techDesc"
+      "sidebar generator extender tech"
+      "sidebar generator extender techDesc"
 }
 
 .title {
@@ -100,7 +100,7 @@ a:active {
 }
 
 .gridList {
-  grid-area: grid;
+  grid-area: extender;
 }
 
 .techList {
