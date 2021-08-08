@@ -9,6 +9,7 @@
     <div class="currencySidebar">
         <h2>Money: @DisplayHelpers.DisplayPrice(Engine.State.Cash)</h2>
         <div class="btn" @onclick="SaveGame">Save game</div>
+        <div class="btn" @onclick="LoadGame">Load game</div>
     </div>
 
     <div class="buildingList">
@@ -43,8 +44,7 @@
         this.StateHasChanged();
     }
 
-    private Task SaveGame()
-    {
-        return Engine.SaveGame();
-    }
+    private async Task SaveGame() => await Engine.SaveGame();
+
+    private async Task LoadGame() => await Engine.LoadGame();
 }

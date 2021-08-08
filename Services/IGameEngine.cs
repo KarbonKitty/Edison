@@ -7,6 +7,7 @@ namespace Edison
     {
         void ProcessTime(DateTime newTime);
         bool TryBuy(IBuyable buyable);
-        Task SaveGame();
+        ValueTask SaveGame();
+        ValueTask LoadGame();
     }
 }

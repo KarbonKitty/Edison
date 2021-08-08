@@ -10,13 +10,13 @@ namespace Edison
         public double BaseProduction { get; }
         public int NumberBuilt { get; private set; }
 
-        public PowerGenerator(Generators id, string name, double basePrice, double baseProduction)
+        public PowerGenerator(Generators id, string name, double basePrice, double baseProduction, int numberBuilt = 0)
         {
             Id = id;
             BasePrice = basePrice;
             Name = name;
             BaseProduction = baseProduction;
-            NumberBuilt = 0;
+            NumberBuilt = numberBuilt;
         }
 
         public double CurrentProduction => BaseProduction * NumberBuilt;

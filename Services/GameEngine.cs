@@ -50,7 +50,7 @@ namespace Edison
             return false;
         }
 
-        public async Task SaveGame()
+        public async ValueTask SaveGame()
         {
             var gameStateDto = new GameStateDto
             {
@@ -60,6 +60,22 @@ namespace Edison
                 Generators = State.Generators.Select(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }).ToList()
             };
             await JS.InvokeVoidAsync("localStorage.setItem", "data", JsonSerializer.Serialize(gameStateDto));
+        }
+
+        public async ValueTask LoadGame()
+        {
+            var data = await JS.InvokeAsync<string>("localStorage.getItem", "data");
+            var gameStateDto = JsonSerializer.Deserialize<GameStateDto>(data);
+            State = new GameState
+            {
+                LastTick = new DateTime(gameStateDto.LastTick),
+                LastDiff = gameStateDto.LastDiff,
+                Cash = gameStateDto.Cash,
+                Generators = gameStateDto.Generators.Select(g => {
+                    var generatorData = PowerGeneratorsData.Data.Single(pg => pg.id == g.Id);
+                    return new PowerGenerator(g.Id, generatorData.name, generatorData.startingPrice, generatorData.startingProduction, g.NumberBuilt);
+                }).ToList()
+            };
         }
 
         private void RunGenerators(double deltaT)
