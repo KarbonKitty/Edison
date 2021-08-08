@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Edison
 {
@@ -6,5 +7,6 @@ namespace Edison
     {
         void ProcessTime(DateTime newTime);
         bool TryBuy(IBuyable buyable);
+        Task SaveGame();
     }
 }

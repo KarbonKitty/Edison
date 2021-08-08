@@ -81,6 +81,7 @@ a:active {
   display: grid;
   grid-template-columns: 20rem 1fr 1fr 1fr;
   grid-template-rows: 4rem 1fr 1fr;
+  column-gap: 2rem;
   grid-template-areas: 
       "header header header header"
       "sidebar generator extender tech"

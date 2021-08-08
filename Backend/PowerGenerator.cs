@@ -4,13 +4,15 @@ namespace Edison
 {
     public class PowerGenerator : IBuyable
     {
+        public Generators Id { get; }
         public double BasePrice { get; }
         public string Name { get; }
         public double BaseProduction { get; }
         public int NumberBuilt { get; private set; }
 
-        public PowerGenerator(double basePrice, string name, double baseProduction)
+        public PowerGenerator(Generators id, string name, double basePrice, double baseProduction)
         {
+            Id = id;
             BasePrice = basePrice;
             Name = name;
             BaseProduction = baseProduction;

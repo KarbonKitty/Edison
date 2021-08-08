@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.JSInterop;
+using System.Text.Json;
 
 namespace Edison
 {
@@ -8,8 +11,12 @@ namespace Edison
     {
         public GameState State { get; set; }
 
-        public GameEngine()
+        private readonly IJSRuntime JS;
+
+        public GameEngine(IJSRuntime js)
         {
+            JS = js;
+
             State = new GameState
             {
                 LastTick = DateTime.Now,
@@ -18,9 +25,9 @@ namespace Edison
                 Generators = new List<PowerGenerator>()
             };
 
-            foreach (var (name, price, production) in PowerGeneratorsData.Data)
+            foreach (var (id, name, price, production) in PowerGeneratorsData.Data)
             {
-                State.Generators.Add(new PowerGenerator(price, name, production));
+                State.Generators.Add(new PowerGenerator(id, name, price, production));
             }
         }
 
@@ -41,6 +48,18 @@ namespace Edison
                 return true;
             }
             return false;
+        }
+
+        public async Task SaveGame()
+        {
+            var gameStateDto = new GameStateDto
+            {
+                LastTick = State.LastTick.Ticks,
+                LastDiff = State.LastDiff,
+                Cash = State.Cash,
+                Generators = State.Generators.Select(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }).ToList()
+            };
+            await JS.InvokeVoidAsync("localStorage.setItem", "data", JsonSerializer.Serialize(gameStateDto));
         }
 
         private void RunGenerators(double deltaT)
