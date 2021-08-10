@@ -2,6 +2,10 @@
 @using System.Timers
 
 <div class="container">
+    <div class=@(ShowSaveNotification ? "toast" : "toast invisible")>
+        <p>Game saved!</p>
+    </div>
+
     <div class="title">
         <h1>Edison</h1>
     </div>
@@ -27,6 +31,9 @@
 @code {
     [Inject] protected GameEngine Engine { get; set; }
     protected Timer gameTimer;
+    protected Timer autoSaveTimer;
+    protected Timer saveNotificationTimer { get; set; }
+    private bool ShowSaveNotification { get; set; }
 
     protected override void OnInitialized()
     {
@@ -36,12 +43,39 @@
         };
         gameTimer.Elapsed += LoopStep;
         gameTimer.Start();
+
+        autoSaveTimer = new Timer {
+            Interval = 30_000
+        };
+        autoSaveTimer.Elapsed += AutoSave;
+        autoSaveTimer.Start();
+
+        saveNotificationTimer = new Timer {
+            Interval = 5_000,
+            AutoReset = false
+        };
+        saveNotificationTimer.Elapsed += RemoveSaveNotification;
     }
 
     private void LoopStep(object sender, ElapsedEventArgs e)
     {
         Engine.ProcessTime(e.SignalTime);
         this.StateHasChanged();
+    }
+
+    private async void AutoSave(object sender, ElapsedEventArgs e)
+    {
+        await this.SaveGame();
+        ShowSaveNotification = true;
+        saveNotificationTimer.Stop();
+        saveNotificationTimer.Start();
+        StateHasChanged();
+    }
+
+    private void RemoveSaveNotification(object sender, ElapsedEventArgs e)
+    {
+        ShowSaveNotification = false;
+        StateHasChanged();
     }
 
     private async Task SaveGame() => await Engine.SaveGame();
