@@ -62,10 +62,12 @@ namespace Edison
             await JS.InvokeVoidAsync("localStorage.setItem", "data", JsonSerializer.Serialize(gameStateDto));
         }
 
-        public async ValueTask LoadGame()
+        public async ValueTask<string> GetSavedGameString()
+            => await JS.InvokeAsync<string>("localStorage.getItem", "data");
+
+        public void LoadGame(string serializedState)
         {
-            var data = await JS.InvokeAsync<string>("localStorage.getItem", "data");
-            var gameStateDto = JsonSerializer.Deserialize<GameStateDto>(data);
+            var gameStateDto = JsonSerializer.Deserialize<GameStateDto>(serializedState);
             State = new GameState
             {
                 LastTick = new DateTime(gameStateDto.LastTick),

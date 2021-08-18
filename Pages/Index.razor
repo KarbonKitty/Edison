@@ -55,6 +55,9 @@
             AutoReset = false
         };
         saveNotificationTimer.Elapsed += RemoveSaveNotification;
+
+        // this doesn't do anything if there is no saved game data
+        LoadGame();
     }
 
     private void LoopStep(object sender, ElapsedEventArgs e)
@@ -80,5 +83,12 @@
 
     private async Task SaveGame() => await Engine.SaveGame();
 
-    private async Task LoadGame() => await Engine.LoadGame();
+    private async Task LoadGame()
+    {
+        var serializedState = await Engine.GetSavedGameString();
+        if (serializedState is not null)
+        {
+            Engine.LoadGame(serializedState);
+        }
+    }
 }

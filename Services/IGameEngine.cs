@@ -8,6 +8,7 @@ namespace Edison
         void ProcessTime(DateTime newTime);
         bool TryBuy(IBuyable buyable);
         ValueTask SaveGame();
-        ValueTask LoadGame();
+        ValueTask<string> GetSavedGameString();
+        void LoadGame(string serializedState);
     }
 }
