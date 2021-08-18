@@ -39,6 +39,8 @@ namespace Edison
             RunGenerators(deltaT.TotalMilliseconds / 1000);
         }
 
+        public bool CanAfford(IBuyable buyable) => State.Cash >= buyable.CurrentPrice;
+
         public bool TryBuy(IBuyable buyable)
         {
             if (State.Cash >= buyable.CurrentPrice)

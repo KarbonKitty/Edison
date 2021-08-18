@@ -3,17 +3,16 @@
     <h2 style="float: right">Price: @DisplayHelpers.DisplayPrice(Generator.CurrentPrice)</h2>
     <div style="clear: both"></div>
     <p>Production: @Generator.CurrentProduction $ / s</p>
-    <div class="btn" @onclick="BuyGenerator">Buy</div>
+    <button class="btn" @onclick="BuyGenerator" disabled=@(!CanAfford())>Buy</button>
 </div>
 
 @code {
-    [Inject] protected GameEngine engine { get; set; }
+    [Inject] protected GameEngine Engine { get; set; }
 
     [Parameter]
     public PowerGenerator Generator { get; set; }
 
-    private void BuyGenerator()
-    {
-        engine.TryBuy(Generator);
-    }
+    private void BuyGenerator() => Engine.TryBuy(Generator);
+
+    private bool CanAfford() => Engine.CanAfford(Generator);
 }
