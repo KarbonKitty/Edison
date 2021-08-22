@@ -84,7 +84,7 @@ namespace Edison
 
         private void RunGenerators(double deltaT)
         {
-            var moneyProduced = State.Generators.Sum(g => g.CurrentProduction * deltaT);
+            var moneyProduced = State.Generators.Sum(g => g.TotalProduction * deltaT);
             State.Cash += moneyProduced;
         }
     }

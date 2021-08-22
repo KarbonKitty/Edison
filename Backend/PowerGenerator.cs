@@ -19,7 +19,10 @@ namespace Edison
             NumberBuilt = numberBuilt;
         }
 
-        public double CurrentProduction => BaseProduction * NumberBuilt;
+        public double TotalProduction => SingleProduction * NumberBuilt;
+
+        // Upgrades will be applied here
+        public double SingleProduction => BaseProduction;
 
         // TODO: shouldn't we have the multiplier defined separately?
         public double CurrentPrice => BasePrice * Math.Pow(1.15, NumberBuilt);

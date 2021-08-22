@@ -1,9 +1,10 @@
 <div class="generator">
-    <h2 style="float: left">@Generator.Name (@Generator.NumberBuilt)</h2>
-    <h2 style="float: right">Price: @DisplayHelpers.DisplayPrice(Generator.CurrentPrice)</h2>
-    <div style="clear: both"></div>
-    <p>Production: @Generator.CurrentProduction $ / s</p>
-    <button class="btn" @onclick="BuyGenerator" disabled=@(!CanAfford())>Buy</button>
+    <div class="header">
+        <p><strong>@Generator.Name (@Generator.NumberBuilt)</strong></p>
+        <p>+ @Generator.SingleProduction $ / s</p>
+    </div>
+    <p>Total production: @Generator.TotalProduction $ / s</p>
+    <button class="btn buyButton" @onclick="BuyGenerator" disabled=@(!CanAfford())>Buy @DisplayHelpers.DisplayPrice(Generator.CurrentPrice)</button>
 </div>
 
 @code {
