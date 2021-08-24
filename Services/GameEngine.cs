@@ -66,7 +66,9 @@ namespace Edison
                 LastTick = State.LastTick.Ticks,
                 LastDiff = State.LastDiff,
                 Cash = State.Cash,
-                Generators = State.Generators.Select(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }).ToList()
+                GridSize = State.GridSize,
+                Generators = State.Generators.Select(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }).ToList(),
+                Extenders = State.Extenders.Select(e => new ExtenderDto { Id = e.Id, NumberBuilt = e.NumberBuilt }).ToList()
             };
             await JS.InvokeVoidAsync("localStorage.setItem", "data", JsonSerializer.Serialize(gameStateDto));
         }
@@ -82,9 +84,14 @@ namespace Edison
                 LastTick = new DateTime(gameStateDto.LastTick),
                 LastDiff = gameStateDto.LastDiff,
                 Cash = gameStateDto.Cash,
+                GridSize = gameStateDto.GridSize,
                 Generators = gameStateDto.Generators.Select(g => {
                     var generatorData = PowerGeneratorsData.Data.Single(pg => pg.id == g.Id);
                     return new PowerGenerator(g.Id, generatorData.name, generatorData.startingPrice, generatorData.startingProduction, g.NumberBuilt);
+                }).ToList(),
+                Extenders = gameStateDto.Extenders.Select(e => {
+                    var extenderData = GridExtendersData.Data.Single(ge => ge.id == e.Id);
+                    return new GridExtender(e.Id, extenderData.name, extenderData.startingPrice, extenderData.startingExtension, e.NumberBuilt);
                 }).ToList()
             };
         }
