@@ -22,12 +22,18 @@ namespace Edison
                 LastTick = DateTime.Now,
                 LastDiff = 0,
                 Cash = 100,
-                Generators = new List<PowerGenerator>()
+                Generators = new List<PowerGenerator>(),
+                Extenders = new List<GridExtender>()
             };
 
             foreach (var (id, name, price, production) in PowerGeneratorsData.Data)
             {
                 State.Generators.Add(new PowerGenerator(id, name, price, production));
+            }
+
+            foreach (var (id, name, price, extension) in GridExtendersData.Data)
+            {
+                State.Extenders.Add(new GridExtender(id, name, price, extension));
             }
         }
 
