@@ -1,0 +1,18 @@
+<div class="extender">
+    <div class="header">
+        <p><strong>@Extender.Name (@Extender.NumberBuilt)</strong></p>
+        <p>+ @Extender.SingleExtension connected</p>
+    </div>
+    <p>Total connected: @Extender.TotalExtension</p>
+    <button class="btn buyButton" @onclick="BuyExtender" disabled=@(!CanAfford())>
+        Buy @DisplayHelpers.DisplayPrice(Extender.CurrentPrice)
+    </button>
+</div>
+
+@code {
+    [Inject] protected GameEngine Engine { get; set; }
+    [Parameter] public GridExtender Extender { get; set; }
+
+    private void BuyExtender() => Engine.TryBuy(Extender);
+    private bool CanAfford() => Engine.CanAfford(Extender);
+}

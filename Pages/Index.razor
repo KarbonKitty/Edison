@@ -25,7 +25,10 @@
     </div>
 
     <div class="gridList">
-        <!---->
+        @foreach (var extender in Engine.State.Extenders)
+        {
+            <GridExtenderComponent Extender=@extender />
+        }
     </div>
 </div>
 
