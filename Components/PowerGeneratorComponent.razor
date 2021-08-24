@@ -1,9 +1,9 @@
 <div class="generator">
     <div class="header">
         <p><strong>@Generator.Name (@Generator.NumberBuilt)</strong></p>
-        <p>+ @Generator.SingleProduction $ / s</p>
+        <p>+ @Generator.SingleProduction kWh / s</p>
     </div>
-    <p>Total production: @Generator.TotalProduction $ / s</p>
+    <p>Total production: @Generator.TotalProduction kWh / s</p>
     <button class="btn buyButton" @onclick="BuyGenerator" disabled=@(!CanAfford())>Buy @DisplayHelpers.DisplayPrice(Generator.CurrentPrice)</button>
 </div>
 

@@ -42,6 +42,7 @@ namespace Edison
             var deltaT = newTime - State.LastTick;
             State.LastDiff = deltaT.TotalMilliseconds;
             State.LastTick = newTime;
+            State.GridSize = State.Extenders.Sum(e => e.TotalExtension);
             RunGenerators(deltaT.TotalMilliseconds / 1000);
         }
 
@@ -90,8 +91,9 @@ namespace Edison
 
         private void RunGenerators(double deltaT)
         {
-            var moneyProduced = State.Generators.Sum(g => g.TotalProduction * deltaT);
-            State.Cash += moneyProduced;
+            var powerProduced = State.Generators.Sum(g => g.TotalProduction * deltaT);
+            var powerSold = powerProduced > State.GridSize ? State.GridSize : powerProduced;
+            State.Cash += powerSold;
         }
     }
 }
