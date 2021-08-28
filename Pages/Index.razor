@@ -12,7 +12,8 @@
 
     <div class="currencySidebar">
         <h2>Money: @DisplayHelpers.DisplayPrice(Engine.State.Cash)</h2>
-        <h2>Grid size: @Engine.State.GridSize</h2>
+        <h2>Production: @Engine.State.TotalPowerProduction kWh / s</h2>
+        <h2 class=@(Engine.State.GridSize < Engine.State.TotalPowerProduction ? "warning" : "")>Grid size: @Engine.State.GridSize</h2>
         <button class="btn" @onclick="SaveGame">Save game</button>
         <button class="btn" @onclick="LoadGame">Load game</button>
     </div>

@@ -45,6 +45,10 @@ a:active {
   color: var(--blue);
 }
 
+.warning {
+  color: var(--red);
+}
+
 .btn {
   border: 0;
   border-radius: 4px;

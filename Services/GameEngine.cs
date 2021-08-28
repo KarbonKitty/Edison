@@ -22,6 +22,8 @@ namespace Edison
                 LastTick = DateTime.Now,
                 LastDiff = 0,
                 Cash = 100,
+                GridSize = 0,
+                TotalPowerProduction = 0,
                 Generators = new List<PowerGenerator>(),
                 Extenders = new List<GridExtender>()
             };
@@ -43,7 +45,7 @@ namespace Edison
             State.LastDiff = deltaT.TotalMilliseconds;
             State.LastTick = newTime;
             State.GridSize = State.Extenders.Sum(e => e.TotalExtension);
-            RunGenerators(deltaT.TotalMilliseconds / 1000);
+            State.TotalPowerProduction = RunGenerators(deltaT.TotalMilliseconds / 1000);
         }
 
         public bool CanAfford(IBuyable buyable) => State.Cash >= buyable.CurrentPrice;
@@ -67,6 +69,7 @@ namespace Edison
                 LastDiff = State.LastDiff,
                 Cash = State.Cash,
                 GridSize = State.GridSize,
+                TotalPowerProduction = State.TotalPowerProduction,
                 Generators = State.Generators.Select(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }).ToList(),
                 Extenders = State.Extenders.Select(e => new ExtenderDto { Id = e.Id, NumberBuilt = e.NumberBuilt }).ToList()
             };
@@ -85,6 +88,7 @@ namespace Edison
                 LastDiff = gameStateDto.LastDiff,
                 Cash = gameStateDto.Cash,
                 GridSize = gameStateDto.GridSize,
+                TotalPowerProduction = gameStateDto.TotalPowerProduction,
                 Generators = gameStateDto.Generators.Select(g => {
                     var generatorData = PowerGeneratorsData.Data.Single(pg => pg.id == g.Id);
                     return new PowerGenerator(g.Id, generatorData.name, generatorData.startingPrice, generatorData.startingProduction, g.NumberBuilt);
@@ -96,11 +100,13 @@ namespace Edison
             };
         }
 
-        private void RunGenerators(double deltaT)
+        private double RunGenerators(double deltaT)
         {
-            var powerProduced = State.Generators.Sum(g => g.TotalProduction * deltaT);
+            var totalPowerProduction = State.Generators.Sum(g => g.TotalProduction);
+            var powerProduced = totalPowerProduction * deltaT;
             var powerSold = powerProduced > State.GridSize ? State.GridSize : powerProduced;
             State.Cash += powerSold;
+            return totalPowerProduction;
         }
     }
 }
