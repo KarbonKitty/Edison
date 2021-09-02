@@ -11,6 +11,7 @@ namespace Edison
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
+            builder.Services.AddScoped<IToastService, ToastService>();
             builder.Services.AddSingleton(typeof(GameEngine));
 
             await builder.Build().RunAsync();

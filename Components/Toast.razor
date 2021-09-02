@@ -1,0 +1,35 @@
+<div class="toast @(IsVisible ? "toast-visible" : null)">
+    <p>@Message</p>
+</div>
+
+@code {
+    [Inject] private IToastService toastService { get; set; }
+
+    private string Message { get; set; }
+    private bool IsVisible { get; set; }
+
+    protected override void OnInitialized()
+    {
+        toastService.OnShow += ShowToast;
+        toastService.OnHide += HideToast;
+    }
+
+    private void ShowToast(string message)
+    {
+        IsVisible = true;
+        Message = message;
+        StateHasChanged();
+    }
+
+    private void HideToast()
+    {
+        IsVisible = false;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        toastService.OnShow -= ShowToast;
+        toastService.OnHide -= HideToast;
+    }
+}

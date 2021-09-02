@@ -2,9 +2,7 @@
 @using System.Timers
 
 <div class="container">
-    <div class=@(ShowSaveNotification ? "toast" : "toast invisible")>
-        <p>Game saved!</p>
-    </div>
+    <Toast />
 
     <div class="title">
         <h1>Edison</h1>
@@ -35,10 +33,9 @@
 
 @code {
     [Inject] protected GameEngine Engine { get; set; }
+    [Inject] private IToastService ToastService { get; set; }
     protected Timer gameTimer;
     protected Timer autoSaveTimer;
-    protected Timer saveNotificationTimer { get; set; }
-    private bool ShowSaveNotification { get; set; }
 
     protected override void OnInitialized()
     {
@@ -55,12 +52,6 @@
         autoSaveTimer.Elapsed += AutoSave;
         autoSaveTimer.Start();
 
-        saveNotificationTimer = new Timer {
-            Interval = 5_000,
-            AutoReset = false
-        };
-        saveNotificationTimer.Elapsed += RemoveSaveNotification;
-
         // this doesn't do anything if there is no saved game data
         LoadGame();
     }
@@ -74,19 +65,14 @@
     private async void AutoSave(object sender, ElapsedEventArgs e)
     {
         await this.SaveGame();
-        ShowSaveNotification = true;
-        saveNotificationTimer.Stop();
-        saveNotificationTimer.Start();
-        StateHasChanged();
+        ToastService.ShowToast("Game saved!");
     }
 
-    private void RemoveSaveNotification(object sender, ElapsedEventArgs e)
+    private async Task SaveGame()
     {
-        ShowSaveNotification = false;
-        StateHasChanged();
+        await Engine.SaveGame();
+        ToastService.ShowToast("Game manually saved");
     }
-
-    private async Task SaveGame() => await Engine.SaveGame();
 
     private async Task LoadGame()
     {
@@ -94,6 +80,7 @@
         if (serializedState is not null)
         {
             Engine.LoadGame(serializedState);
+            ToastService.ShowToast("Game loaded");
         }
     }
 }
