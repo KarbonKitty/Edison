@@ -4,7 +4,7 @@ public static class PowerGeneratorsData
 {
     public static List<(Generators id, string name, double startingPrice, double startingProduction)> Data
         => new() {
-            (Generators.Solar, "Solar", 15, 1),
+            (Generators.Solar, "Solar", 50, 1),
             (Generators.Hydro, "Hydro", 250, 2),
             (Generators.Coal, "Coal", 1000, 2.5),
             (Generators.Gas, "Gas", 10_000, 3),
