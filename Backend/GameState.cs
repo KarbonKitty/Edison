@@ -13,5 +13,6 @@ namespace Edison
         public double TotalPowerProduction { get; set; }
         public List<PowerGenerator> Generators { get; set; }
         public List<GridExtender> Extenders { get; set; }
+        public List<Appliance> Appliances { get; set; }
     }
 }

@@ -28,7 +28,5 @@ namespace Edison
         public double CurrentPrice => BasePrice * Math.Pow(1.15, NumberBuilt);
 
         public void Get() => NumberBuilt++;
-
-        public bool CanAfford(GameState state) => state.Cash >= CurrentPrice;
     }
 }

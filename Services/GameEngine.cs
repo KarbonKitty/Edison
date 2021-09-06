@@ -26,7 +26,8 @@ namespace Edison
                 PowerUsage = 1,
                 TotalPowerProduction = 0,
                 Generators = new List<PowerGenerator>(),
-                Extenders = new List<GridExtender>()
+                Extenders = new List<GridExtender>(),
+                Appliances = new List<Appliance>()
             };
 
             foreach (var (id, name, price, production) in PowerGeneratorsData.Data)
@@ -37,6 +38,11 @@ namespace Edison
             foreach (var (id, name, price, extension) in GridExtendersData.Data)
             {
                 State.Extenders.Add(new GridExtender(id, name, price, extension));
+            }
+
+            foreach (var (id, name, price, usage) in AppliancesData.Data)
+            {
+                State.Appliances.Add(new Appliance(id, name, price, usage));
             }
         }
 
