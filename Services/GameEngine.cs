@@ -23,6 +23,7 @@ namespace Edison
                 LastDiff = 0,
                 Cash = 100,
                 GridSize = 0,
+                PowerUsage = 1,
                 TotalPowerProduction = 0,
                 Generators = new List<PowerGenerator>(),
                 Extenders = new List<GridExtender>()
@@ -70,6 +71,7 @@ namespace Edison
                 Cash = State.Cash,
                 GridSize = State.GridSize,
                 TotalPowerProduction = State.TotalPowerProduction,
+                PowerUsage = State.PowerUsage,
                 Generators = State.Generators.Select(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }).ToList(),
                 Extenders = State.Extenders.Select(e => new ExtenderDto { Id = e.Id, NumberBuilt = e.NumberBuilt }).ToList()
             };
@@ -89,6 +91,7 @@ namespace Edison
                 Cash = gameStateDto.Cash,
                 GridSize = gameStateDto.GridSize,
                 TotalPowerProduction = gameStateDto.TotalPowerProduction,
+                PowerUsage = gameStateDto.PowerUsage,
                 Generators = gameStateDto.Generators.Select(g => {
                     var generatorData = PowerGeneratorsData.Data.Single(pg => pg.id == g.Id);
                     return new PowerGenerator(g.Id, generatorData.name, generatorData.startingPrice, generatorData.startingProduction, g.NumberBuilt);
@@ -104,7 +107,8 @@ namespace Edison
         {
             var totalPowerProduction = State.Generators.Sum(g => g.TotalProduction);
             var powerProduced = totalPowerProduction * deltaT;
-            var powerSold = powerProduced > State.GridSize ? State.GridSize : powerProduced;
+            var totalPowerUsage = State.GridSize * State.PowerUsage;
+            var powerSold = powerProduced > totalPowerUsage ? totalPowerUsage : powerProduced;
             State.Cash += powerSold;
             return totalPowerProduction;
         }
