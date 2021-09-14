@@ -9,6 +9,8 @@ namespace Edison
 {
     public class GameEngine : IGameEngine
     {
+        private const int BasePowerUsage = 1;
+
         public GameState State { get; set; }
 
         private readonly IJSRuntime JS;
@@ -23,7 +25,7 @@ namespace Edison
                 LastDiff = 0,
                 Cash = 100,
                 GridSize = 0,
-                PowerUsage = 1,
+                PowerUsage = BasePowerUsage,
                 TotalPowerProduction = 0,
                 Generators = new List<PowerGenerator>(),
                 Extenders = new List<GridExtender>(),
@@ -63,6 +65,8 @@ namespace Edison
             {
                 State.Cash -= buyable.CurrentPrice;
                 buyable.Get();
+                // TODO: find out a better way to do this
+                State.PowerUsage = BasePowerUsage + State.Appliances.Where(a => a.IsBought).Sum(a => a.AdditionalUsage);
                 return true;
             }
             return false;
@@ -79,7 +83,8 @@ namespace Edison
                 TotalPowerProduction = State.TotalPowerProduction,
                 PowerUsage = State.PowerUsage,
                 Generators = State.Generators.Select(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }).ToList(),
-                Extenders = State.Extenders.Select(e => new ExtenderDto { Id = e.Id, NumberBuilt = e.NumberBuilt }).ToList()
+                Extenders = State.Extenders.Select(e => new ExtenderDto { Id = e.Id, NumberBuilt = e.NumberBuilt }).ToList(),
+                Appliances = State.Appliances.Select(a => new ApplianceDto { Id = a.Id, IsBought = a.IsBought }).ToList()
             };
             await JS.InvokeVoidAsync("localStorage.setItem", "data", JsonSerializer.Serialize(gameStateDto));
         }
@@ -97,7 +102,6 @@ namespace Edison
                 Cash = gameStateDto.Cash,
                 GridSize = gameStateDto.GridSize,
                 TotalPowerProduction = gameStateDto.TotalPowerProduction,
-                PowerUsage = gameStateDto.PowerUsage,
                 Generators = gameStateDto.Generators.Select(g => {
                     var generatorData = PowerGeneratorsData.Data.Single(pg => pg.id == g.Id);
                     return new PowerGenerator(g.Id, generatorData.name, generatorData.startingPrice, generatorData.startingProduction, g.NumberBuilt);
@@ -105,8 +109,13 @@ namespace Edison
                 Extenders = gameStateDto.Extenders.Select(e => {
                     var extenderData = GridExtendersData.Data.Single(ge => ge.id == e.Id);
                     return new GridExtender(e.Id, extenderData.name, extenderData.startingPrice, extenderData.startingExtension, e.NumberBuilt);
+                }).ToList(),
+                Appliances = gameStateDto.Appliances.Select(a => {
+                    var applianceData = AppliancesData.Data.Single(ad => ad.IDictionary == a.Id);
+                    return new Appliance(a.Id, applianceData.name, applianceData.price, applianceData.additionalUsage, a.IsBought);
                 }).ToList()
             };
+            State.PowerUsage = BasePowerUsage + State.Appliances.Where(a => a.IsBought).Sum(a => a.AdditionalUsage);
         }
 
         private double RunGenerators(double deltaT)

@@ -1,0 +1,18 @@
+<div class="appliance">
+    <div class="header">
+        <p><strong>@Appliance.Name (@Appliance.IsBought)</strong></p>
+        @* <p>+ @Appliance.AdditionalUsage kWh/s used per person</p> *@
+    </div>
+    <p>+ @Appliance.AdditionalUsage kWh/s used per person</p>
+    <button class="btn buyButton" @onclick="BuyAppliance" disabled=@(!CanAfford())>
+        Buy @DisplayHelpers.DisplayPrice(Appliance.CurrentPrice)
+    </button>
+</div>
+
+@code {
+    [Inject] protected GameEngine Engine { get; set; }
+    [Parameter] public Appliance Appliance { get; set; }
+
+    private void BuyAppliance() => Engine.TryBuy(Appliance);
+    private bool CanAfford() => Engine.CanAfford(Appliance);
+}

@@ -10,4 +10,5 @@ public class GameStateDto
     public double TotalPowerProduction { get; set; }
     public List<GeneratorDto> Generators { get; set; }
     public List<ExtenderDto> Extenders { get; set; }
+    public List<ApplianceDto> Appliances { get; set; }
 }
