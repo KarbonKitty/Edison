@@ -13,6 +13,9 @@ namespace Edison
 
         public GameState State { get; set; }
 
+        public double PowerUsage => BasePowerUsage + State.Appliances.Where(a => a.IsBought).Sum(a => a.AdditionalUsage);
+        public double TotalPowerUsage => State.GridSize * PowerUsage;
+
         private readonly IJSRuntime JS;
 
         public GameEngine(IJSRuntime js)
@@ -25,7 +28,6 @@ namespace Edison
                 LastDiff = 0,
                 Cash = 100,
                 GridSize = 0,
-                PowerUsage = BasePowerUsage,
                 TotalPowerProduction = 0,
                 Generators = new List<PowerGenerator>(),
                 Extenders = new List<GridExtender>(),
@@ -65,8 +67,6 @@ namespace Edison
             {
                 State.Cash -= buyable.CurrentPrice;
                 buyable.Get();
-                // TODO: find out a better way to do this
-                State.PowerUsage = BasePowerUsage + State.Appliances.Where(a => a.IsBought).Sum(a => a.AdditionalUsage);
                 return true;
             }
             return false;
@@ -81,7 +81,6 @@ namespace Edison
                 Cash = State.Cash,
                 GridSize = State.GridSize,
                 TotalPowerProduction = State.TotalPowerProduction,
-                PowerUsage = State.PowerUsage,
                 Generators = State.Generators.Select(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }).ToList(),
                 Extenders = State.Extenders.Select(e => new ExtenderDto { Id = e.Id, NumberBuilt = e.NumberBuilt }).ToList(),
                 Appliances = State.Appliances.Select(a => new ApplianceDto { Id = a.Id, IsBought = a.IsBought }).ToList()
@@ -115,15 +114,13 @@ namespace Edison
                     return new Appliance(a.Id, applianceData.name, applianceData.price, applianceData.additionalUsage, a.IsBought);
                 }).ToList()
             };
-            State.PowerUsage = BasePowerUsage + State.Appliances.Where(a => a.IsBought).Sum(a => a.AdditionalUsage);
         }
 
         private double RunGenerators(double deltaT)
         {
             var totalPowerProduction = State.Generators.Sum(g => g.TotalProduction);
             var powerProduced = totalPowerProduction * deltaT;
-            var totalPowerUsage = State.GridSize * State.PowerUsage;
-            var powerSold = powerProduced > totalPowerUsage ? totalPowerUsage : powerProduced;
+            var powerSold = powerProduced > TotalPowerUsage ? TotalPowerUsage : powerProduced;
             State.Cash += powerSold;
             return totalPowerProduction;
         }

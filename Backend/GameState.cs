@@ -9,7 +9,6 @@ namespace Edison
         public double LastDiff { get; set; }
         public double Cash { get; set; }
         public int GridSize { get; set; }
-        public double PowerUsage { get; set; }
         public double TotalPowerProduction { get; set; }
         public List<PowerGenerator> Generators { get; set; }
         public List<GridExtender> Extenders { get; set; }
