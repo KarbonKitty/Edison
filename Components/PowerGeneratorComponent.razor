@@ -5,7 +5,7 @@
     </div>
     <p>Total production: @Generator.TotalProduction kWh / s</p>
     <button class="btn buyButton" @onclick="BuyGenerator" disabled=@(!CanAfford())>
-        Buy @DisplayHelpers.DisplayPrice(Generator.CurrentPrice)
+        Buy @Generator.CurrentPrice
     </button>
 </div>
 

@@ -26,7 +26,7 @@ namespace Edison
             {
                 LastTick = DateTime.Now,
                 LastDiff = 0,
-                Cash = 100,
+                Cash = new CashValue(100),
                 GridSize = 0,
                 TotalPowerProduction = 0,
                 Generators = new List<PowerGenerator>(),
@@ -78,7 +78,7 @@ namespace Edison
             {
                 LastTick = State.LastTick.Ticks,
                 LastDiff = State.LastDiff,
-                Cash = State.Cash,
+                Cash = State.Cash.Value,
                 GridSize = State.GridSize,
                 TotalPowerProduction = State.TotalPowerProduction,
                 Generators = State.Generators.Select(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }).ToList(),
@@ -98,7 +98,7 @@ namespace Edison
             {
                 LastTick = new DateTime(gameStateDto.LastTick),
                 LastDiff = gameStateDto.LastDiff,
-                Cash = gameStateDto.Cash,
+                Cash = new CashValue(gameStateDto.Cash),
                 GridSize = gameStateDto.GridSize,
                 TotalPowerProduction = gameStateDto.TotalPowerProduction,
                 Generators = gameStateDto.Generators.Select(g => {
@@ -121,7 +121,7 @@ namespace Edison
             var totalPowerProduction = State.Generators.Sum(g => g.TotalProduction);
             var powerProduced = totalPowerProduction * deltaT;
             var powerSold = powerProduced > TotalPowerUsage ? TotalPowerUsage : powerProduced;
-            State.Cash += powerSold;
+            State.Cash += new CashValue(powerSold);
             return totalPowerProduction;
         }
     }

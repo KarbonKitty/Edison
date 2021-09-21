@@ -5,7 +5,7 @@ namespace Edison
     public class GridExtender : IBuyable
     {
         public Extenders Id { get; }
-        public double BasePrice { get; }
+        public CashValue BasePrice { get; }
         public string Name { get; }
         public int BaseExtension { get; }
         public int NumberBuilt { get; private set; }
@@ -13,7 +13,7 @@ namespace Edison
         public GridExtender(Extenders id, string name, double basePrice, int baseExtension, int numberBuilt = 0)
         {
             Id = id;
-            BasePrice = basePrice;
+            BasePrice = new CashValue(basePrice);
             Name = name;
             BaseExtension = baseExtension;
             NumberBuilt = numberBuilt;
@@ -23,7 +23,7 @@ namespace Edison
 
         public int SingleExtension => BaseExtension;
 
-        public double CurrentPrice => BasePrice * Math.Pow(1.15, NumberBuilt);
+        public CashValue CurrentPrice => BasePrice * Math.Pow(1.15, NumberBuilt);
 
         public void Get() => NumberBuilt++;
     }

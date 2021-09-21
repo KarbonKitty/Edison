@@ -3,7 +3,7 @@ namespace Edison
 
     public interface IBuyable
     {
-        double CurrentPrice { get; }
+        CashValue CurrentPrice { get; }
         void Get();
     }
 }

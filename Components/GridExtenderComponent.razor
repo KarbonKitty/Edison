@@ -5,7 +5,7 @@
     </div>
     <p>Total connected: @Extender.TotalExtension</p>
     <button class="btn buyButton" @onclick="BuyExtender" disabled=@(!CanAfford())>
-        Buy @DisplayHelpers.DisplayPrice(Extender.CurrentPrice)
+        Buy @Extender.CurrentPrice
     </button>
 </div>
 

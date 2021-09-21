@@ -5,7 +5,7 @@
     </div>
     <p>+ @Appliance.AdditionalUsage kWh/s used per person</p>
     <button class="btn buyButton" @onclick="BuyAppliance" disabled=@(!CanAfford())>
-        Buy @DisplayHelpers.DisplayPrice(Appliance.CurrentPrice)
+        Buy @Appliance.CurrentPrice
     </button>
 </div>
 
