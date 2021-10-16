@@ -1,5 +1,8 @@
-public class GeneratorDto
+namespace Edison
 {
-    public Generators Id { get; set; }
-    public int NumberBuilt { get; set; }
+    public class GeneratorDto
+    {
+        public Generators Id { get; set; }
+        public int NumberBuilt { get; set; }
+    }
 }
