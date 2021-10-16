@@ -1,7 +1,8 @@
-using Edison;
-
-public class ExtenderDto
+namespace Edison
 {
-    public Extenders Id { get; set; }
-    public int NumberBuilt { get; set; }
+    public class ExtenderDto
+    {
+        public Extenders Id { get; set; }
+        public int NumberBuilt { get; set; }
+    }
 }

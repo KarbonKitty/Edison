@@ -81,9 +81,9 @@ namespace Edison
                 Cash = State.Cash,
                 GridSize = State.GridSize,
                 TotalPowerProduction = State.TotalPowerProduction,
-                Generators = State.Generators.Select(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }).ToList(),
-                Extenders = State.Extenders.Select(e => new ExtenderDto { Id = e.Id, NumberBuilt = e.NumberBuilt }).ToList(),
-                Appliances = State.Appliances.Select(a => new ApplianceDto { Id = a.Id, IsBought = a.IsBought }).ToList()
+                Generators = State.Generators.ConvertAll(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }),
+                Extenders = State.Extenders.ConvertAll(e => new ExtenderDto { Id = e.Id, NumberBuilt = e.NumberBuilt }),
+                Appliances = State.Appliances.ConvertAll(a => new ApplianceDto { Id = a.Id, IsBought = a.IsBought })
             };
             await JS.InvokeVoidAsync("localStorage.setItem", "data", JsonSerializer.Serialize(gameStateDto));
         }
@@ -101,18 +101,18 @@ namespace Edison
                 Cash = gameStateDto.Cash,
                 GridSize = gameStateDto.GridSize,
                 TotalPowerProduction = gameStateDto.TotalPowerProduction,
-                Generators = gameStateDto.Generators.Select(g => {
-                    var generatorData = PowerGeneratorsData.Data.Single(pg => pg.id == g.Id);
-                    return new PowerGenerator(g.Id, generatorData.name, generatorData.startingPrice, generatorData.startingProduction, g.NumberBuilt);
-                }).ToList(),
-                Extenders = gameStateDto.Extenders.Select(e => {
-                    var extenderData = GridExtendersData.Data.Single(ge => ge.id == e.Id);
-                    return new GridExtender(e.Id, extenderData.name, extenderData.startingPrice, extenderData.startingExtension, e.NumberBuilt);
-                }).ToList(),
-                Appliances = gameStateDto.Appliances.Select(a => {
-                    var applianceData = AppliancesData.Data.Single(ad => ad.IDictionary == a.Id);
-                    return new Appliance(a.Id, applianceData.name, applianceData.price, applianceData.additionalUsage, a.IsBought);
-                }).ToList()
+                Generators = gameStateDto.Generators.ConvertAll(g => {
+                    var (id, name, startingPrice, startingProduction) = PowerGeneratorsData.Data.Single(pg => pg.id == g.Id);
+                    return new PowerGenerator(g.Id, name, startingPrice, startingProduction, g.NumberBuilt);
+                }),
+                Extenders = gameStateDto.Extenders.ConvertAll(e => {
+                    var (id, name, startingPrice, startingExtension) = GridExtendersData.Data.Single(ge => ge.id == e.Id);
+                    return new GridExtender(e.Id, name, startingPrice, startingExtension, e.NumberBuilt);
+                }),
+                Appliances = gameStateDto.Appliances.ConvertAll(a => {
+                    var (id, name, price, additionalUsage) = AppliancesData.Data.Single(ad => ad.IDictionary == a.Id);
+                    return new Appliance(a.Id, name, price, additionalUsage, a.IsBought);
+                })
             };
         }
 

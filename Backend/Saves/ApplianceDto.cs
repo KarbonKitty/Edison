@@ -1,7 +1,8 @@
-using Edison;
-
-public class ApplianceDto
+namespace Edison
 {
-    public Appliances Id { get; set; }
-    public bool IsBought { get; set; }
+    public class ApplianceDto
+    {
+        public Appliances Id { get; set; }
+        public bool IsBought { get; set; }
+    }
 }

@@ -3,7 +3,7 @@ using System.Timers;
 
 namespace Edison
 {
-    public class ToastService : IToastService, IDisposable
+    public sealed class ToastService : IToastService, IDisposable
     {
         public event Action<string> OnShow;
         public event Action OnHide;

@@ -1,11 +1,14 @@
-public enum Generators
+namespace Edison
 {
-    Solar,
-    Hydro,
-    Coal,
-    Gas,
-    Fission,
-    Fusion,
-    Orbital,
-    ZeroPoint
+    public enum Generators
+    {
+        Solar,
+        Hydro,
+        Coal,
+        Gas,
+        Fission,
+        Fusion,
+        Orbital,
+        ZeroPoint
+    }
 }

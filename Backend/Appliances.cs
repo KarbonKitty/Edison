@@ -1,13 +1,16 @@
-public enum Appliances
+namespace Edison
 {
-    WashingMachine,
-    Lightbulb,
-    TV,
-    VacuumCleaner,
-    AC,
-    Refrigerator,
-    HairDryer,
-    Dishwasher,
-    PowerTools,
-    SmartHome
+    public enum Appliances
+    {
+        WashingMachine,
+        Lightbulb,
+        TV,
+        VacuumCleaner,
+        AC,
+        Refrigerator,
+        HairDryer,
+        Dishwasher,
+        PowerTools,
+        SmartHome
+    }
 }
