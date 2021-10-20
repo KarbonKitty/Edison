@@ -2,7 +2,7 @@ using System;
 
 namespace Edison
 {
-    public class Researcher : IBuyable
+    public class Researcher : ICashBuyable
     {
         public Researchers Id { get; }
         public CashValue BasePrice { get; }

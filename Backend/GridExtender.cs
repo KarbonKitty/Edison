@@ -2,7 +2,7 @@ using System;
 
 namespace Edison
 {
-    public class GridExtender : IBuyable
+    public class GridExtender : ICashBuyable
     {
         public Extenders Id { get; }
         public CashValue BasePrice { get; }

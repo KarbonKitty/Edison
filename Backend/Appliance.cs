@@ -1,9 +1,9 @@
 namespace Edison
 {
-    public class Appliance : IBuyable
+    public class Appliance : IResearchable
     {
         public Appliances Id { get; }
-        public CashValue Price { get; }
+        public ResearchPointsValue Price { get; }
         public string Name { get; }
         public double AdditionalUsage { get; }
         public bool IsBought { get; private set; }
@@ -11,13 +11,13 @@ namespace Edison
         public Appliance(Appliances id, string name, double price, double additionalUsage, bool isBought = false)
         {
             Id = id;
-            Price = new CashValue(price);
+            Price = new ResearchPointsValue(price);
             Name = name;
             AdditionalUsage = additionalUsage;
             IsBought = isBought;
         }
 
-        public CashValue CurrentPrice => Price;
+        public ResearchPointsValue CurrentPrice => Price;
 
         public void Get() => IsBought = true;
     }

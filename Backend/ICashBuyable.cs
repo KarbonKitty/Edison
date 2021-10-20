@@ -1,6 +1,6 @@
 namespace Edison
 {
-    public interface IBuyable
+    public interface ICashBuyable
     {
         CashValue CurrentPrice { get; }
         void Get();

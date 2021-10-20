@@ -2,7 +2,7 @@ using System;
 
 namespace Edison
 {
-    public class PowerGenerator : IBuyable
+    public class PowerGenerator : ICashBuyable
     {
         public Generators Id { get; }
         public CashValue BasePrice { get; }

@@ -67,17 +67,32 @@ namespace Edison
             RunResearchers(deltaT.TotalMilliseconds / 1000);
         }
 
-        public bool CanAfford(IBuyable buyable) => State.Cash >= buyable.CurrentPrice;
+        public bool CanAfford(ICashBuyable buyable) => State.Cash >= buyable.CurrentPrice;
 
-        public bool TryBuy(IBuyable buyable)
+        public bool CanAfford(IResearchable researchable) => State.Research >= researchable.CurrentPrice;
+
+        public bool TryBuy(ICashBuyable buyable)
         {
-            if (State.Cash >= buyable.CurrentPrice)
+            if (State.Cash < buyable.CurrentPrice)
             {
-                State.Cash -= buyable.CurrentPrice;
-                buyable.Get();
-                return true;
+                return false;
             }
-            return false;
+
+            State.Cash -= buyable.CurrentPrice;
+            buyable.Get();
+            return true;
+        }
+
+        public bool TryBuy(IResearchable researchable)
+        {
+            if (State.Research < researchable.CurrentPrice)
+            {
+                return false;
+            }
+
+            State.Research -= researchable.CurrentPrice;
+            researchable.Get();
+            return true;
         }
 
         public async ValueTask SaveGame()
