@@ -7,6 +7,7 @@ namespace Edison
         public long LastTick { get; set; }
         public double LastDiff { get; set; }
         public double Cash { get; set; }
+        public double Research { get; set; }
         public int GridSize { get; set; }
         public double TotalPowerProduction { get; set; }
         public List<GeneratorDto> Generators { get; set; }

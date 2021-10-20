@@ -8,6 +8,7 @@ namespace Edison
         public DateTime LastTick { get; set; }
         public double LastDiff { get; set; }
         public CashValue Cash { get; set; }
+        public ResearchPointsValue Research { get; set; }
         public int GridSize { get; set; }
         public double TotalPowerProduction { get; set; }
         public List<PowerGenerator> Generators { get; set; }

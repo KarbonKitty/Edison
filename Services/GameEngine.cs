@@ -57,6 +57,7 @@ namespace Edison
             State.LastTick = newTime;
             State.GridSize = State.Extenders.Sum(e => e.TotalExtension);
             State.TotalPowerProduction = RunGenerators(deltaT.TotalMilliseconds / 1000);
+            RunResearchers(deltaT.TotalMilliseconds / 1000);
         }
 
         public bool CanAfford(IBuyable buyable) => State.Cash >= buyable.CurrentPrice;
@@ -79,6 +80,7 @@ namespace Edison
                 LastTick = State.LastTick.Ticks,
                 LastDiff = State.LastDiff,
                 Cash = State.Cash.Value,
+                Research = State.Research.Value,
                 GridSize = State.GridSize,
                 TotalPowerProduction = State.TotalPowerProduction,
                 Generators = State.Generators.ConvertAll(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }),
@@ -99,6 +101,7 @@ namespace Edison
                 LastTick = new DateTime(gameStateDto.LastTick),
                 LastDiff = gameStateDto.LastDiff,
                 Cash = new CashValue(gameStateDto.Cash),
+                Research = new ResearchPointsValue(gameStateDto.Research),
                 GridSize = gameStateDto.GridSize,
                 TotalPowerProduction = gameStateDto.TotalPowerProduction,
                 Generators = gameStateDto.Generators.ConvertAll(g => {
@@ -123,6 +126,13 @@ namespace Edison
             var powerSold = powerProduced > TotalPowerUsage ? TotalPowerUsage : powerProduced;
             State.Cash += new CashValue(powerSold);
             return totalPowerProduction;
+        }
+
+        private double RunResearchers(double deltaT)
+        {
+            var totalResearchProduction = 1; // State.Researchers.Sum(r => r.TotalProduction);
+            State.Research += new ResearchPointsValue(totalResearchProduction);
+            return totalResearchProduction;
         }
     }
 }

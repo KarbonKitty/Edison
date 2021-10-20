@@ -15,9 +15,9 @@ namespace Edison
         public static bool operator >=(CashValue a, CashValue b) => a.Value >= b.Value;
         public static bool operator <(CashValue a, CashValue b) => a.Value < b.Value;
         public static bool operator <=(CashValue a, CashValue b) => a.Value <= b.Value;
-        public static CashValue operator +(CashValue a, CashValue b) => new CashValue(a.Value + b.Value);
-        public static CashValue operator -(CashValue a, CashValue b) => new CashValue(a.Value - b.Value);
-        public static CashValue operator *(CashValue p, double scale) => new CashValue(p.Value * scale);
-        public static CashValue operator /(CashValue p, double scale) => new CashValue(p.Value / scale);
+        public static CashValue operator +(CashValue a, CashValue b) => new(a.Value + b.Value);
+        public static CashValue operator -(CashValue a, CashValue b) => new(a.Value - b.Value);
+        public static CashValue operator *(CashValue p, double scale) => new(p.Value * scale);
+        public static CashValue operator /(CashValue p, double scale) => new(p.Value / scale);
     }
 }
