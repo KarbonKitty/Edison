@@ -4,7 +4,7 @@ namespace Edison
 {
     public static class AppliancesData
     {
-        public static List<(Appliances IDictionary, string name, double price, double additionalUsage)> Data
+        public static List<(Appliances id, string name, double price, double additionalUsage)> Data
             => new()
             {
                 (Appliances.Lightbulb, "Lightbulb", 150, 0.25),

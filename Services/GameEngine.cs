@@ -29,9 +29,11 @@ namespace Edison
                 Cash = new CashValue(100),
                 GridSize = 0,
                 TotalPowerProduction = 0,
+                Research = new ResearchPointsValue(0),
                 Generators = new List<PowerGenerator>(),
                 Extenders = new List<GridExtender>(),
-                Appliances = new List<Appliance>()
+                Appliances = new List<Appliance>(),
+                Researchers = new List<Researcher>()
             };
 
             foreach (var (id, name, price, production) in PowerGeneratorsData.Data)
@@ -47,6 +49,11 @@ namespace Edison
             foreach (var (id, name, price, usage) in AppliancesData.Data)
             {
                 State.Appliances.Add(new Appliance(id, name, price, usage));
+            }
+
+            foreach (var (id, name, price, production) in ResearchersData.Data)
+            {
+                State.Researchers.Add(new Researcher(id, name, price, production));
             }
         }
 
@@ -85,7 +92,8 @@ namespace Edison
                 TotalPowerProduction = State.TotalPowerProduction,
                 Generators = State.Generators.ConvertAll(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }),
                 Extenders = State.Extenders.ConvertAll(e => new ExtenderDto { Id = e.Id, NumberBuilt = e.NumberBuilt }),
-                Appliances = State.Appliances.ConvertAll(a => new ApplianceDto { Id = a.Id, IsBought = a.IsBought })
+                Appliances = State.Appliances.ConvertAll(a => new ApplianceDto { Id = a.Id, IsBought = a.IsBought }),
+                Researchers = State.Researchers.ConvertAll(r => new ResearcherDto { Id = r.Id, NumberBuilt = r.NumberBuilt })
             };
             await JS.InvokeVoidAsync("localStorage.setItem", "data", JsonSerializer.Serialize(gameStateDto));
         }
@@ -113,8 +121,12 @@ namespace Edison
                     return new GridExtender(e.Id, name, startingPrice, startingExtension, e.NumberBuilt);
                 }),
                 Appliances = gameStateDto.Appliances.ConvertAll(a => {
-                    var (id, name, price, additionalUsage) = AppliancesData.Data.Single(ad => ad.IDictionary == a.Id);
+                    var (id, name, price, additionalUsage) = AppliancesData.Data.Single(ad => ad.id == a.Id);
                     return new Appliance(a.Id, name, price, additionalUsage, a.IsBought);
+                }),
+                Researchers = gameStateDto.Researchers.ConvertAll(r => {
+                    var (id, name, price, startingProduction) = ResearchersData.Data.Single(rd => rd.id == r.Id);
+                    return new Researcher(r.Id, name, price, startingProduction, r.NumberBuilt);
                 })
             };
         }
@@ -128,11 +140,11 @@ namespace Edison
             return totalPowerProduction;
         }
 
-        private double RunResearchers(double deltaT)
+        private void RunResearchers(double deltaT)
         {
-            var totalResearchProduction = 1; // State.Researchers.Sum(r => r.TotalProduction);
-            State.Research += new ResearchPointsValue(totalResearchProduction);
-            return totalResearchProduction;
+            var totalResearchProduction = State.Researchers.Sum(r => r.TotalProduction.Value);
+            var researchProduced = totalResearchProduction * deltaT;
+            State.Research += new ResearchPointsValue(researchProduced);
         }
     }
 }

@@ -13,5 +13,6 @@ namespace Edison
         public List<GeneratorDto> Generators { get; set; }
         public List<ExtenderDto> Extenders { get; set; }
         public List<ApplianceDto> Appliances { get; set; }
+        public List<ResearcherDto> Researchers { get; set; }
     }
 }
