@@ -1,0 +1,21 @@
+<div class="researcher">
+    <div class="header">
+        <p><strong>@Researcher.Name (@Researcher.NumberBuilt)</strong></p>
+        <p>+ @Researcher.SingleProduction</p>
+    </div>
+    <p>Total production: @Researcher.TotalProduction</p>
+    <button class="btn buyButton" @onclick="BuyResearcher" disabled=@(!CanAfford())>
+        Buy @Researcher.CurrentPrice
+    </button> 
+</div>
+
+@code {
+    [Inject] protected GameEngine Engine { get; set; }
+
+    [Parameter]
+    public Researcher Researcher { get; set; }
+
+    private void BuyResearcher() => Engine.TryBuy(Researcher);
+
+    private bool CanAfford() => Engine.CanAfford(Researcher);
+}

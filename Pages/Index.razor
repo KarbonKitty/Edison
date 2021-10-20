@@ -39,6 +39,13 @@
             <ApplianceComponent Appliance=@appliance />
         }
     </div>
+
+    <div class="researcherList">
+        @foreach (var researcher in Engine.State.Researchers)
+        {
+            <ResearcherComponent Researcher=@researcher />
+        }
+    </div>
 </div>
 
 @code {
