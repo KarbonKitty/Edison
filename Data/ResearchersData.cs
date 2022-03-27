@@ -7,7 +7,7 @@ namespace Edison
         public static List<(Researchers id, string name, double startingPrice, double startingProduction)> Data
         => new()
         {
-            (Researchers.Inventor, "Self-taught inventor", 33, 2),
+            (Researchers.Inventor, "Self-taught inventor", 105, 2),
             (Researchers.PhD, "Engineering PhD", 255, 4),
             (Researchers.ResearchTeam, "Research team", 1255, 6),
             (Researchers.ResearchInstitute, "Research institute", 3333, 8),

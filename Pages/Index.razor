@@ -9,9 +9,9 @@
     </div>
 
     <div class="currencySidebar">
-        <h2>Money: @Engine.State.Cash</h2>
-        <h2>Research: @Engine.State.Research</h2>
-        <h2>Production: @Engine.State.TotalPowerProduction kWh / s</h2>
+        <h2>Money: @Engine.State.Cash.ToString()</h2>
+        <h2>Research: @Engine.State.Research.ToString()</h2>
+        <h2>Production: @(Engine.State.TotalPowerProduction.ToString("N2")) kWh / s</h2>
         <h2 class=@(Engine.TotalPowerUsage < Engine.State.TotalPowerProduction ? "warning" : "")>Demand: @((Engine.TotalPowerUsage).ToString("N2")) kWh / s</h2>
         <h3>Grid size: @Engine.State.GridSize people</h3>
         <h3>Power usage per person: @Engine.PowerUsage.ToString("N2") kWh / s</h3>

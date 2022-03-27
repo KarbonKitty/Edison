@@ -1,11 +1,13 @@
 <div class="appliance">
     <div class="header">
-        <p><strong>@Appliance.Name @(Appliance.IsBought ? "✔" : "")</strong></p>
+        <p><strong>@(Appliance.IsBought ? "✔" : "") @Appliance.Name</strong></p>
     </div>
-    <p>+ @Appliance.AdditionalUsage kWh/s used per person</p>
-    <button class="btn buyButton" @onclick="BuyAppliance" disabled=@(!CanAfford() || Appliance.IsBought)>
-        @(Appliance.IsBought ? "Owned" : $"Buy {Appliance.CurrentPrice}")
-    </button>
+    <div hidden=@(Appliance.IsBought)>
+        <p>+ @Appliance.AdditionalUsage kWh/s used per person</p>
+        <button class="btn buyButton" @onclick="BuyAppliance" disabled=@(!CanAfford() || Appliance.IsBought)>
+            @(Appliance.IsBought ? "Owned" : $"Buy {Appliance.CurrentPrice}")
+        </button>
+    </div>
 </div>
 
 @code {
