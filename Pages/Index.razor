@@ -70,7 +70,7 @@
         autoSaveTimer.Start();
 
         // this doesn't do anything if there is no saved game data
-        LoadGame();
+        var _ = LoadGame();
     }
 
     private void LoopStep(object sender, ElapsedEventArgs e)

@@ -1,8 +1,7 @@
-namespace Edison
+namespace Edison;
+
+public interface ICashBuyable
 {
-    public interface ICashBuyable
-    {
-        CashValue CurrentPrice { get; }
-        void Get();
-    }
+    CashValue CurrentPrice { get; }
+    void Get();
 }
