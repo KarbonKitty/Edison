@@ -36,9 +36,9 @@ namespace Edison
                 Researchers = new List<Researcher>()
             };
 
-            foreach (var (id, name, price, production) in PowerGeneratorsData.Data)
+            foreach (var (id, name, price, production, hidden) in PowerGeneratorsData.Data)
             {
-                State.Generators.Add(new PowerGenerator(id, name, price, production));
+                State.Generators.Add(new PowerGenerator(id, name, price, production, isHidden: hidden));
             }
 
             foreach (var (id, name, price, extension) in GridExtendersData.Data)
@@ -65,6 +65,7 @@ namespace Edison
             State.GridSize = State.Extenders.Sum(e => e.TotalExtension);
             State.TotalPowerProduction = RunGenerators(deltaT.TotalMilliseconds / 1000);
             RunResearchers(deltaT.TotalMilliseconds / 1000);
+            ProcessEvents();
         }
 
         public bool CanAfford(ICashBuyable buyable) => State.Cash >= buyable.CurrentPrice;
@@ -105,7 +106,7 @@ namespace Edison
                 Research = State.Research.Value,
                 GridSize = State.GridSize,
                 TotalPowerProduction = State.TotalPowerProduction,
-                Generators = State.Generators.ConvertAll(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt }),
+                Generators = State.Generators.ConvertAll(g => new GeneratorDto { Id = g.Id, NumberBuilt = g.NumberBuilt, IsHidden = g.IsHidden }),
                 Extenders = State.Extenders.ConvertAll(e => new ExtenderDto { Id = e.Id, NumberBuilt = e.NumberBuilt }),
                 Appliances = State.Appliances.ConvertAll(a => new ApplianceDto { Id = a.Id, IsBought = a.IsBought }),
                 Researchers = State.Researchers.ConvertAll(r => new ResearcherDto { Id = r.Id, NumberBuilt = r.NumberBuilt })
@@ -128,8 +129,8 @@ namespace Edison
                 GridSize = gameStateDto.GridSize,
                 TotalPowerProduction = gameStateDto.TotalPowerProduction,
                 Generators = gameStateDto.Generators.ConvertAll(g => {
-                    var (id, name, startingPrice, startingProduction) = PowerGeneratorsData.Data.Single(pg => pg.id == g.Id);
-                    return new PowerGenerator(g.Id, name, startingPrice, startingProduction, g.NumberBuilt);
+                    var (id, name, startingPrice, startingProduction, isHidden) = PowerGeneratorsData.Data.Single(pg => pg.id == g.Id);
+                    return new PowerGenerator(g.Id, name, startingPrice, startingProduction, g.NumberBuilt, isHidden: isHidden);
                 }),
                 Extenders = gameStateDto.Extenders.ConvertAll(e => {
                     var (id, name, startingPrice, startingExtension) = GridExtendersData.Data.Single(ge => ge.id == e.Id);
@@ -160,6 +161,18 @@ namespace Edison
             var totalResearchProduction = State.Researchers.Sum(r => r.TotalProduction.Value);
             var researchProduced = totalResearchProduction * deltaT;
             State.Research += new ResearchPointsValue(researchProduced);
+        }
+
+        // TODO: should this be a part of the generator, actually?
+        private void ProcessEvents()
+        {
+            foreach (var g in State.Generators.Where(g => g.IsHidden))
+            {
+                if (State.Cash >= g.BasePrice / 2)
+                {
+                    g.Reveal();
+                }
+            }
         }
     }
 }
