@@ -9,6 +9,8 @@ public class PowerGenerator : ICashBuyable, IHideable
     public string Name { get; }
     public double BaseProduction { get; }
     public int NumberBuilt { get; private set; }
+
+    public Func<GameState, bool> RevealFunction => gs => gs.Cash > BasePrice / 2;
     public bool IsHidden { get; private set; }
 
     public PowerGenerator(Generators id, string name, double basePrice, double baseProduction, int numberBuilt = 0, bool isHidden = true)

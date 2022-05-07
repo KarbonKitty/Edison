@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Edison
 {
@@ -15,5 +16,6 @@ namespace Edison
         public List<GridExtender> Extenders { get; set; }
         public List<Appliance> Appliances { get; set; }
         public List<Researcher> Researchers { get; set; }
+        public IEnumerable<IHideable> Hideables => Generators.Cast<IHideable>();
     }
 }

@@ -163,15 +163,11 @@ namespace Edison
             State.Research += new ResearchPointsValue(researchProduced);
         }
 
-        // TODO: should this be a part of the generator, actually?
         private void ProcessEvents()
         {
-            foreach (var g in State.Generators.Where(g => g.IsHidden))
+            foreach (var h in State.Hideables.Where(x => x.IsHidden && x.RevealFunction(State)))
             {
-                if (State.Cash >= g.BasePrice / 2)
-                {
-                    g.Reveal();
-                }
+                h.Reveal();
             }
         }
     }
