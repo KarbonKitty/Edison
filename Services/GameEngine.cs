@@ -41,9 +41,9 @@ namespace Edison
                 State.Generators.Add(new PowerGenerator(id, name, price, production, isHidden: hidden));
             }
 
-            foreach (var (id, name, price, extension) in GridExtendersData.Data)
+            foreach (var (id, name, price, extension, isHidden) in GridExtendersData.Data)
             {
-                State.Extenders.Add(new GridExtender(id, name, price, extension));
+                State.Extenders.Add(new GridExtender(id, name, price, extension, isHidden: isHidden));
             }
 
             foreach (var (id, name, price, usage) in AppliancesData.Data)
@@ -130,11 +130,11 @@ namespace Edison
                 TotalPowerProduction = gameStateDto.TotalPowerProduction,
                 Generators = gameStateDto.Generators.ConvertAll(g => {
                     var (id, name, startingPrice, startingProduction, isHidden) = PowerGeneratorsData.Data.Single(pg => pg.id == g.Id);
-                    return new PowerGenerator(g.Id, name, startingPrice, startingProduction, g.NumberBuilt, isHidden: isHidden);
+                    return new PowerGenerator(g.Id, name, startingPrice, startingProduction, g.NumberBuilt, g.IsHidden);
                 }),
                 Extenders = gameStateDto.Extenders.ConvertAll(e => {
-                    var (id, name, startingPrice, startingExtension) = GridExtendersData.Data.Single(ge => ge.id == e.Id);
-                    return new GridExtender(e.Id, name, startingPrice, startingExtension, e.NumberBuilt);
+                    var (id, name, startingPrice, startingExtension, isHidden) = GridExtendersData.Data.Single(ge => ge.id == e.Id);
+                    return new GridExtender(e.Id, name, startingPrice, startingExtension, e.NumberBuilt, e.IsHidden);
                 }),
                 Appliances = gameStateDto.Appliances.ConvertAll(a => {
                     var (id, name, price, additionalUsage) = AppliancesData.Data.Single(ad => ad.id == a.Id);

@@ -9,8 +9,6 @@ public class PowerGenerator : ICashBuyable, IHideable
     public string Name { get; }
     public double BaseProduction { get; }
     public int NumberBuilt { get; private set; }
-
-    public Func<GameState, bool> RevealFunction => gs => gs.Cash > BasePrice / 2;
     public bool IsHidden { get; private set; }
 
     public PowerGenerator(Generators id, string name, double basePrice, double baseProduction, int numberBuilt = 0, bool isHidden = true)
@@ -30,6 +28,8 @@ public class PowerGenerator : ICashBuyable, IHideable
 
     // TODO: shouldn't we have the multiplier defined separately?
     public CashValue CurrentPrice => BasePrice * Math.Pow(1.15, NumberBuilt);
+
+    public Func<GameState, bool> RevealFunction => gs => gs.Cash > BasePrice / 2;
 
     public void Get() => NumberBuilt++;
 

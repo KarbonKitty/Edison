@@ -4,5 +4,6 @@ namespace Edison
     {
         public Extenders Id { get; set; }
         public int NumberBuilt { get; set; }
+        public bool IsHidden { get; set; }
     }
 }
