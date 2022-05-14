@@ -27,7 +27,7 @@ namespace Edison
 
         public CashValue CurrentPrice => BasePrice * Math.Pow(1.15, NumberBuilt);
 
-        public Func<GameState, bool> RevealFunction =>  gs => gs.Cash > BasePrice / 2;
+        public Func<GameState, bool> RevealFunction => gs => gs.Cash > BasePrice / 2;
 
         public void Get() => NumberBuilt++;
 

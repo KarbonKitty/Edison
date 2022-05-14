@@ -51,9 +51,9 @@ namespace Edison
                 State.Appliances.Add(new Appliance(id, name, price, usage));
             }
 
-            foreach (var (id, name, price, production) in ResearchersData.Data)
+            foreach (var (id, name, price, production, isHidden) in ResearchersData.Data)
             {
-                State.Researchers.Add(new Researcher(id, name, price, production));
+                State.Researchers.Add(new Researcher(id, name, price, production, isHidden: isHidden));
             }
         }
 
@@ -141,8 +141,8 @@ namespace Edison
                     return new Appliance(a.Id, name, price, additionalUsage, a.IsBought);
                 }),
                 Researchers = gameStateDto.Researchers.ConvertAll(r => {
-                    var (id, name, price, startingProduction) = ResearchersData.Data.Single(rd => rd.id == r.Id);
-                    return new Researcher(r.Id, name, price, startingProduction, r.NumberBuilt);
+                    var (id, name, price, startingProduction, isHidden) = ResearchersData.Data.Single(rd => rd.id == r.Id);
+                    return new Researcher(r.Id, name, price, startingProduction, r.NumberBuilt, r.IsHidden);
                 })
             };
         }
