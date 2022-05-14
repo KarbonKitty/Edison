@@ -1,0 +1,153 @@
+:root {
+  --base03: #002b36;
+  --base02: #073642;
+  --base01: #586e75;
+  --base00: #657b83;
+  --base0: #839496;
+  --base1: #93a1a1;
+  --base2: #eee8d5;
+  --base3: #fdf6e3;
+  --yellow: #b58900;
+  --orange: #cb4b16;
+  --red: #dc322f;
+  --magenta: #d33682;
+  --violet: #6c71c4;
+  --blue: #268bd2;
+  --cyan: #2aa198;
+  --green: #859900;
+}
+
+body {
+  background-color: var(--base03);
+  font-family: "Assistant", sans-serif;
+  color: var(--base0);
+}
+
+a {
+  text-decoration: none;
+}
+
+a:link {
+  color: var(--green);
+}
+
+a:visited {
+  color: var(--violet);
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--red);
+}
+
+a:active {
+  text-decoration: underline;
+  color: var(--blue);
+}
+
+.warning {
+  color: var(--red);
+}
+
+.btn {
+  border: 0;
+  border-radius: 4px;
+  font-size: 16px;
+  padding: 6px 12px 6px 12px;
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--base2);
+  background: var(--blue);
+}
+
+.btn:hover {
+  background-color: var(--base02);
+}
+
+.btn.save {
+  color: var(--base2);
+  background: var(--blue);
+}
+
+.btn.danger {
+  color: var(--base2);
+  background: var(--red);
+}
+
+.btn:disabled {
+  background: var(--base03);
+  color: var(--base0);
+  border: 1px solid var(--base0);
+  cursor: default;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 20rem 1fr 1fr 1fr 1fr;
+  grid-template-rows: 4rem minmax(12rem, 60vh) minmax(6rem, 30vh);
+  column-gap: 2rem;
+  grid-template-areas: 
+      "header header header header header"
+      "sidebar generator extender researcher tech"
+      "sidebar generator extender researcher techDesc"
+}
+
+.title {
+  grid-area: header;
+}
+
+.currencySidebar {
+  grid-area: sidebar;
+}
+
+.generatorList {
+  grid-area: generator;
+}
+
+.gridList {
+  grid-area: extender;
+}
+
+.techList {
+  grid-area: tech;
+}
+
+.researcherList {
+  grid-area: researcher;
+}
+
+.techDescription {
+  grid-area: techDesc;
+}
+
+.toast {
+  display: none;
+  position: fixed;
+  top: 4rem;
+  right: 4rem;
+  background-color: #383838;
+  color: #F0F0F0;
+  text-align: center;
+  font-size: 20px;
+  border-radius: 2px;
+  box-shadow: 0px 0px 24px -1px rgba(56, 56, 56, 1);
+}
+
+.toast > p {
+  padding: 1rem 3rem;
+}
+
+.toast-visible {
+  display: block;
+  animation: fadein 1s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
